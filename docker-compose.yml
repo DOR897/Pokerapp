@@ -1,0 +1,44 @@
+version: "3.9"
+
+services:
+  pg:
+    image: postgres:16
+    container_name: poker-pg
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: poker
+      POSTGRES_PASSWORD: poker
+      POSTGRES_DB: pokerdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+
+  api:
+    build: ./backend
+    container_name: poker-api
+    restart: unless-stopped
+    env_file:
+      - ./backend/.env
+    depends_on:
+      - pg
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./backend:/app
+
+  web:
+    build: ./frontend
+    container_name: poker-web
+    restart: unless-stopped
+    environment:
+      - VITE_SOCKET_URL=http://localhost:5000
+    ports:
+      - "5173:5173"
+    depends_on:
+      - api
+    volumes:
+      - ./frontend:/app
+
+volumes:
+  pg_data:
