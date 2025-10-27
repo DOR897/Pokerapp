@@ -1,0 +1,14 @@
+{
+  "expo": {
+    "name": "PokerApp",
+    "slug": "pokerapp",
+    "scheme": "pokerapp",
+    "orientation": "portrait",
+    "plugins": ["expo-router"],
+    "extra": {
+      "router": {
+        "origin": "expo"
+      }
+    }
+  }
+}
